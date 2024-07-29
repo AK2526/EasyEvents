@@ -5,6 +5,7 @@ import SignIn from './pages/sign-in';
 import SignUp from './pages/sign-up';
 import { getUsername, sendAuth } from './lib/data';
 import { onAuthStateChanged } from 'firebase/auth';
+import Create from './pages/create';
 
 
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/about" element={<h1>ABOUT PAGE</h1>} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/create" element={<Create />} />
         </Routes>
       </Router>
     </UserContext.Provider>
