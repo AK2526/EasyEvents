@@ -27,14 +27,14 @@ function Create() {
   const [desc, setDesc] = useState("")
   const [date, setDate] = useState(dayjs())
 
-  useEffect(() => {
-    console.log("Name: ", name)
-    console.log("Location: ", location)
-    console.log("GeoLoc: ", geoLoc)
-    console.log("Quick Description: ", quickdesc)
-    console.log("Date", date)
+  // useEffect(() => {
+  //   console.log("Name: ", name)
+  //   console.log("Location: ", location)
+  //   console.log("GeoLoc: ", geoLoc)
+  //   console.log("Quick Description: ", quickdesc)
+  //   console.log("Date", date)
 
-  }, [name, location, geoLoc, date])
+  // }, [name, location, geoLoc, date])
 
 
   return (
@@ -51,7 +51,7 @@ function Create() {
             minDate={dayjs()}
             value={date}
             onAccept={(d) => setDate(d)}
-            
+
             slotProps={{
               textField: {
                 sx: {
@@ -81,9 +81,17 @@ function Create() {
       <Textfield label="Quick Description" rows={2} value={quickdesc} setValue={setQuickdesc} max={quicklen} />
       <Textfield label="Description" rows={8} value={desc} setValue={setDesc} max={desclen} />
       
-<UploadImg />
+      
+      <div className='space-y-8'>
+        <div>
+        <h3 className='text-white text-xl font-semibold'>Event Image</h3>
+        <h2 className='text-gray-500 text-lg font-semibold'>Leave Empty for a Custom Image</h2></div>
+        <div><UploadImg /></div>
+        
+      </div>
 
-      <div className='w-full flex justify-center'>
+
+      <div className='w-full flex justify-center py-10'>
         <Button title="Create Event" styles="mt-3" containerStyles='justify-center w-[70%]' fn={() => { console.log("Create Event") }} />
       </div>
     </div>
