@@ -10,7 +10,7 @@ function Navbar() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext)
     return (
-        <div className='w-full bg-primary sticky top-0 shadow-2xl'>
+        <div className='w-full bg-primary sticky top-0 shadow-2xl z-[9999]'>
             <div className='px-6 py-2 flex-row flex items-center w-full justify-between'>
                 <Link to="/"><img src={logo} alt="logo" className='max-h-14 justify-start' /></Link>
                 <div className='space-x-4'>

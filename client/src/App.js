@@ -7,6 +7,10 @@ import { getUsername, sendAuth } from './lib/data';
 import { onAuthStateChanged } from 'firebase/auth';
 import Create from './pages/create';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
+
 
 
 //Will be using useContext
@@ -29,6 +33,7 @@ function App() {
   });
   
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserContext.Provider value={{user, setUser}}>
       <Router>
         <Navbar />
@@ -42,6 +47,7 @@ function App() {
         </Routes>
       </Router>
     </UserContext.Provider>
+    </LocalizationProvider>
   )
 }
 
