@@ -1,2 +1,3 @@
 server/image.jpg
 server/api.py
+server/certificates/serviceAccount.json

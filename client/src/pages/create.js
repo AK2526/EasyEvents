@@ -75,6 +75,19 @@ function Create() {
         }
         
       }
+      else{
+        fetch("/genimg", {
+          method: "POST",
+          body: JSON.stringify({
+            event_id: eventId,
+            details: name + quickdesc,
+            user_id: user.userId
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }).then(response => response.json()).then(data => console.log(data));
+      }
 
     setError("green Done!")
 
