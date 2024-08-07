@@ -1,3 +1,6 @@
 server/image.jpg
 server/api.py
 server/certificates/serviceAccount.json
+.vscode/
+server/venv/
+server/__pycache__/
