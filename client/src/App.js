@@ -19,19 +19,6 @@ function App() {
   document.body.style = 'background: #071C28;';
   const [user, setUser] = useState({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false}) 
 
-  onAuthStateChanged(user.auth, async (u) => {
-    try {
-      if (u) {
-        setUser({name: await getUsername(u.uid), email: u.email, userId: u.uid, auth: sendAuth(), loggedIn: true})
-      } else {
-        setUser({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false})
-      }
-    } catch (error) {
-      console.log(error)
-    }
-
-  });
-  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserContext.Provider value={{user, setUser}}>

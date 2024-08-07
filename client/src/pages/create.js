@@ -1,19 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Formfield from '../components/Formfield'
 import Textfield from '../components/Textfield'
-import { DatePicker, DesktopDatePicker } from '@mui/x-date-pickers'
 import dayjs, { Dayjs } from 'dayjs'
 import Addressfield from '../components/Addressfield'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../App'
 import Button from '../components/Button'
 import UploadImg from '../components/UploadImg'
+import Datepick from '../components/Datepick'
+import Errorbox from '../components/Errorbox'
+import { addEvent, eventExists, getEventId, uploadImage } from '../lib/data'
+import { getAddressJson } from '../lib/address'
 
 function Create() {
   const nav = useNavigate();
 
   const quicklen = 150;
   const desclen = 2000;
+  
 
   const { user, setUser } = useContext(UserContext)
   if (user.userId === "" || !user.loggedIn) {
@@ -25,16 +29,56 @@ function Create() {
   const [geoLoc, setGeoLoc] = useState(null)
   const [quickdesc, setQuickdesc] = useState("")
   const [desc, setDesc] = useState("")
-  const [date, setDate] = useState(dayjs())
+  const [date, setDate] = useState(null)
+  const [file, setFile] = useState(null)
+  const [error, setError] = useState("")
 
-  // useEffect(() => {
-  //   console.log("Name: ", name)
-  //   console.log("Location: ", location)
-  //   console.log("GeoLoc: ", geoLoc)
-  //   console.log("Quick Description: ", quickdesc)
-  //   console.log("Date", date)
 
-  // }, [name, location, geoLoc, date])
+  const submit = async () => {
+    
+    setError("green Loading...")
+    setError("")
+    if (name === "" || location === "" || quickdesc === "" || desc === "" || date === null) {
+      setError("Please fill out all the fields")
+      return null
+    }
+    if (await eventExists(name)) {
+      setError("An event with the same name already exists. Please choose a different name")
+      return null
+    }
+    setError("green Loading Location Information")
+    let formatted_location = await getAddressJson(geoLoc.place_id)
+    
+    if (formatted_location.formatted_address=== undefined) {
+      formatted_location = {
+        location_name: location,
+        formatted_address: "",
+        short_address: "",
+        coords: {
+          latitude: 0,
+          longitude: 0
+        },
+        place_id: "",
+        hexhash: ""
+      }}
+      console.log(formatted_location)
+
+      let eventId = await getEventId()
+      console.log(file)
+      if (file) {
+        setError("green Uploading Image")
+        console.log("Uploading Image")
+        try {
+          await uploadImage(file, eventId)
+        } catch (error) {
+          setError("Error Uploading Image")
+        }
+        
+      }
+
+    setError("green Done!")
+
+  }
 
 
   return (
@@ -45,32 +89,8 @@ function Create() {
         <div className='w-[200%]'>
           <Addressfield location={location} setLocation={setLocation} setGeoLoc={setGeoLoc} />
         </div>
-        <div className='space-y-2 w-full'>
-          <h3 className='text-white text-xl font-semibold'>Date</h3>
-          <DatePicker
-            minDate={dayjs()}
-            value={date}
-            onAccept={(d) => setDate(d)}
-
-            slotProps={{
-              textField: {
-                sx: {
-                  color: '#ffffff',
-                  borderRadius: '5px',
-                  borderWidth: '0px',
-                  borderColor: '#ffffff',
-                  border: '1px solid',
-                  backgroundColor: '#ffffff',
-                  width: '100%',
-                  textDecoration: 'bold',
-                },
-                size: 'small',
-              },
-
-            }}
-          />
-
-        </div>
+        
+        <Datepick setStringDate={setDate}/>
 
 
       </div>
@@ -86,13 +106,15 @@ function Create() {
         <div>
         <h3 className='text-white text-xl font-semibold'>Event Image</h3>
         <h2 className='text-gray-500 text-lg font-semibold'>Leave Empty for a Custom Image</h2></div>
-        <div><UploadImg /></div>
+        <div><UploadImg file={file} setFile={setFile}/></div>
         
       </div>
 
+<div className='pt-8'><Errorbox title={error}/></div>
+      
 
       <div className='w-full flex justify-center py-10'>
-        <Button title="Create Event" styles="mt-3" containerStyles='justify-center w-[70%]' fn={() => { console.log("Create Event") }} />
+        <Button title="Create Event" styles="mt-3" containerStyles='justify-center w-[70%]' fn={submit} />
       </div>
     </div>
   )

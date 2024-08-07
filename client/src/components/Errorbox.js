@@ -10,6 +10,12 @@ function Errorbox({ title }) {
             <p className='text-white text-center m-1'>{title}</p>
         </div>
     }
+    else if (title.startsWith("green "))
+    {
+        return <div className='bg-green-900 border-black border border-2 '>
+        <p className='text-white text-center m-1'>{title.slice(6)}</p>
+    </div>
+    }
     return (
             <div className='bg-red-900 border-black border border-2 '>
                 <p className='text-white text-center m-1'>{title}</p>

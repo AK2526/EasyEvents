@@ -3,7 +3,7 @@ import Button from '../components/Button'
 import Formfield from '../components/Formfield'
 import { Link, useNavigate } from 'react-router-dom'
 import Errorbox from '../components/Errorbox'
-import { signup } from '../lib/data'
+import { getUsername, sendAuth, signup } from '../lib/data'
 import { UserContext } from '../App'
 
 function SignUp() {
@@ -18,8 +18,18 @@ function SignUp() {
 
     const submit = async () => {
         try {
-             if(await signup(email, password, username, setError)){
-            nav('/')}
+            let k = await signup(email, password, username, setError)
+            let u = k.user
+            if (u)
+                {
+                        setUser({name: await getUsername(u.uid), email: u.email, userId: u.uid, auth: sendAuth(), loggedIn: true})
+
+                    nav('/')
+                }
+
+            else{
+                setUser({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false})
+            }
         } catch (error) {
             console.log(error)
         }

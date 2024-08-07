@@ -55,7 +55,7 @@ def findPlace(location):
     
 @app.route('/place/<place_id>')
 def getPlace(place_id):
-    API_URL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + place_id + "&fields=address_components,formatted_address,place_id&key=" + googleAPI
+    API_URL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + place_id + "&fields=address_components,formatted_address,place_id,name,geometry&key=" + googleAPI
     response = requests.get(API_URL)
     data = response.json()
     if data['status'] == 'OK':

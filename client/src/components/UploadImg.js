@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from './Button'
 
-function UploadImg() {
-    const [file, setFile] = useState(null)
+function UploadImg({file, setFile}) {
     const [img, setImg] = useState(null)
 
     useEffect(() => {
@@ -19,7 +18,10 @@ function UploadImg() {
     }, [file])
 
     const handleFile = (e) => {
-        setFile(e.target.files[0])
+        if (e.target.files.length > 0)
+        {setFile(e.target.files[0])}
+        else{setFile(null)}
+        
     }
     return (
         <div className='flex w-full flex-col'>

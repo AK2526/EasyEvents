@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import Button from '../components/Button'
 import Formfield from '../components/Formfield'
 import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../lib/data'
+import { getUsername, login, sendAuth } from '../lib/data'
 import Errorbox from '../components/Errorbox'
 import { UserContext } from '../App'
 
@@ -17,10 +17,18 @@ function SignIn() {
 
     const submit = async () => {
         try {
-            if (await login(email, password, setError))
+            let k = await login(email, password, setError)
+            let u = k.user
+            if (u)
                 {
+                        setUser({name: await getUsername(u.uid), email: u.email, userId: u.uid, auth: sendAuth(), loggedIn: true})
+
                     nav('/')
                 }
+
+            else{
+                setUser({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false})
+            }
             
             
 
