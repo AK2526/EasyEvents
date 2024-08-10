@@ -18,13 +18,13 @@ function Navbar() {
                     <Link to="/explore" className='text-white text-sm hover:text-gray-400'>Explore</Link>
 
                     {user.name === ""
-                        ? <button onClick={() => { navigate("/sign-in") }} className='text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>Sign In</button>
-                        : <button onClick={() => { navigate("/profile") }} className='text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>{user.name}</button>}
+                        ? <button onClick={() => { navigate("/sign-in") }} className='shadow-md text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>Sign In</button>
+                        : <button onClick={() => { navigate("/profile") }} className='shadow-md text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>{user.name}</button>}
                     
                     {user.name === ""
-                    ?<button onClick={() => { navigate("/sign-up") }} className='text-white bg-[#531F43]
+                    ?<button onClick={() => { navigate("/sign-up") }} className='shadow-md text-white bg-[#531F43]
                      rounded-md text-sm px-1 py-0.5 border-[3px] border-secondary '>Sign Up</button>
-                     :<button onClick={() => { logout(setUser) }} className='text-white bg-[#531F43]
+                     :<button onClick={() => { logout(setUser) }} className='shadow-md text-white bg-[#531F43]
                      rounded-md text-sm px-1 py-0.5 border-[3px] border-secondary '>Log Out</button>}
                 </div>
             </div>

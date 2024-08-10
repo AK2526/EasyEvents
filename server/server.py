@@ -37,7 +37,7 @@ def getImage(name):
         response = requests.post(API_URL, headers=headers, json=payload)
         return response.content
     image_bytes = query({
-        "inputs": "pixel art, simple, " + name + " event",
+        "inputs": "pixel art, simple, no people, " + name,
     })
     return image_bytes
 
@@ -92,7 +92,7 @@ def genimg():
         details = data['details']
         user_id = data['user_id']
         
-        docref = db.collection('events').document(user_id)
+        docref = db.collection('events').document(event_id)
         doc = docref.get().to_dict()
 
         # Check if event exists and user is authorized

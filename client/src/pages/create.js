@@ -20,9 +20,15 @@ function Create() {
   
 
   const { user, setUser } = useContext(UserContext)
-  if (user.userId === "" || !user.loggedIn) {
-    nav('/sign-in')
-  }
+
+  useEffect(() => {
+
+    if (user.userId === "" || !user.loggedIn) {
+      nav('/sign-in/create')
+    }
+  }, [])
+  
+
 
   const [name, setName] = useState("")
   const [location, setLocation] = useState("")
@@ -33,6 +39,11 @@ function Create() {
   const [file, setFile] = useState(null)
   const [error, setError] = useState("")
 
+  useEffect(() => {
+    console.log(date)
+
+  }, [date])
+  
 
   const submit = async () => {
     
@@ -65,6 +76,20 @@ function Create() {
 
       let eventId = await getEventId()
       console.log(file)
+
+      setError("green Adding Event")
+
+      await addEvent({...formatted_location, 
+        event_name: name,
+        event_id: eventId,
+        quick_description: quickdesc,
+        description: desc,
+        date: date,
+        user_id: user.userId,
+        
+      }, eventId)
+
+
       if (file) {
         setError("green Uploading Image")
         console.log("Uploading Image")
@@ -76,7 +101,8 @@ function Create() {
         
       }
       else{
-        fetch("/genimg", {
+        setError("green Generating Image")
+        await fetch("/genimg", {
           method: "POST",
           body: JSON.stringify({
             event_id: eventId,

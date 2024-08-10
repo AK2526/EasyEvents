@@ -9,6 +9,8 @@ import Create from './pages/create';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import EventFullPage from './pages/event-full';
+import Explore from './pages/explore';
 
 
 
@@ -28,9 +30,11 @@ function App() {
 
           <Route path="/" element={<div className=' text-white '><h1 >HOME PAGE</h1></div>} />
           <Route path="/about" element={<h1>ABOUT PAGE</h1>} />
-          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-in/:prev?" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/view/:id" element={<EventFullPage />}/>
+          <Route path="/explore" element={<Explore/>} />
         </Routes>
       </Router>
     </UserContext.Provider>

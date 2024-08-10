@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer } from "firebase/firestore";
 
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6PPDvvZyJTghD4qxw81ECji7U9BsOtN0",
@@ -57,12 +57,14 @@ export const login = async (email, password, setError) => {
       setError("Password is empty")
       return null
     }
+    setError("green Attempting...")
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     setError("")
     console.log(auth)
     return userCred
   } catch (error) {
     console.log(error)
+    setError("Failed to login")
     return null
   }
 }
@@ -117,15 +119,17 @@ export const logout = async (setUser) => {
   try {
     await auth.signOut();
     setUser({ name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false })
+    window.location.reload(false);
   } catch (error) {
     console.log(error)
   }
 }
 
-export const addEvent = async (info) => {
+export const addEvent = async (info, event_id) => {
   console.log(auth.currentUser)
-  const docRef = await addDoc(eventsCollection,
-  {name: {a: "yes", b: "no"}})
+  const docRef = await setDoc(doc(eventsCollection, event_id),
+  info)
+  return "Success"
 
 }
 
@@ -148,4 +152,30 @@ export const uploadImage = async (file, event_id ) => {
 export const getEventId = async () => {
   let ref = doc(eventsCollection);
   return ref.id;
+}
+
+export const getEventInfo = async (event_id) => {
+  const docRef = doc(eventsCollection, event_id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+  else {
+    return null
+  }
+}
+
+
+export const getImageUrl = async (name) =>
+{
+  try{  const storage = getStorage(app);
+    const storageRef = ref(storage, 'thumbnails/' + name);
+    const url = await getDownloadURL(storageRef);
+    return url;}
+    catch (error)
+    {
+      console.log(error)
+      return null
+    }
+
 }
