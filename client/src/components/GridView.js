@@ -1,0 +1,23 @@
+import React, { useEffect, useState } from 'react'
+import EventSnap from './EventSnap'
+import { getUpcomingEvents } from '../lib/data'
+
+function GridView({datalist}) {
+
+    console.log(datalist)
+
+  return (
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8  mt-8'>
+        {datalist.map((item, index) => {
+            return (
+                <div key={index} className='h-full'>
+                    <EventSnap data={item.data()} />
+                </div>
+            )
+        }
+    )}
+    </div>
+  )
+}
+
+export default GridView

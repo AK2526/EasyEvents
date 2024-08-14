@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer } from "firebase/firestore";
+import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer, orderBy, startAt, limit, startAfter } from "firebase/firestore";
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
@@ -83,11 +84,10 @@ export const signup = async (email, password, name, setError) => {
       setError("Username is empty")
       return null
     }
-    
+
     const q = await getCountFromServer(query(usersCollection, where("username", "==", name)));
     console.log(q.data().count)
-    if (q.data().count > 0)
-    {
+    if (q.data().count > 0) {
       setError("Username already in use")
       return null
     }
@@ -128,7 +128,7 @@ export const logout = async (setUser) => {
 export const addEvent = async (info, event_id) => {
   console.log(auth.currentUser)
   const docRef = await setDoc(doc(eventsCollection, event_id),
-  info)
+    info)
   return "Success"
 
 }
@@ -138,15 +138,15 @@ export const eventExists = async (name) => {
   return q.data().count > 0;
 }
 
-export const uploadImage = async (file, event_id ) => {
-    console.log("UploadImage")
-    const storage = getStorage(app);
-    const storageRef = ref(storage, 'thumbnails/' + event_id);
-    const snapshot = await uploadBytes(storageRef, file);
-    return true
+export const uploadImage = async (file, event_id) => {
+  console.log("UploadImage")
+  const storage = getStorage(app);
+  const storageRef = ref(storage, 'thumbnails/' + event_id);
+  const snapshot = await uploadBytes(storageRef, file);
+  return true
 
 
-  
+
 }
 
 export const getEventId = async () => {
@@ -166,16 +166,70 @@ export const getEventInfo = async (event_id) => {
 }
 
 
-export const getImageUrl = async (name) =>
-{
-  try{  const storage = getStorage(app);
+export const getImageUrl = async (name) => {
+  try {
+    const storage = getStorage(app);
     const storageRef = ref(storage, 'thumbnails/' + name);
     const url = await getDownloadURL(storageRef);
-    return url;}
-    catch (error)
-    {
-      console.log(error)
-      return null
-    }
+    return url;
+  }
+  catch (error) {
+    console.log(error)
+    return null
+  }
 
+}
+
+export const getUpcomingEvents = async (setData) => {
+  const q = query(eventsCollection,
+    orderBy("date"),
+    startAt(dayjs().format("YYYY/MM/DD")),
+    limit(10)
+  )
+
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  setData([])
+  querySnapshot.forEach((doc) => {
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
+  return q;
+}
+
+
+export const getPastEvents = async (setData) => {
+  const q = query(eventsCollection,
+    orderBy("date", "desc"),
+    startAfter(dayjs().format("YYYY/MM/DD")),
+    limit(10)
+  )
+
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  setData([])
+  querySnapshot.forEach((doc) => {
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
+  return q;
+}
+
+export const getNextEvents = async (qu, data, setData, setMoreToLoad) => {
+  console.log(qu, data, data[data.length - 1])
+  const q = query(qu, startAfter(data[data.length - 1]));
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+
+  setMoreToLoad(false)
+
+  querySnapshot.forEach((doc) => {
+    setMoreToLoad(true)
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
+  return q;
 }

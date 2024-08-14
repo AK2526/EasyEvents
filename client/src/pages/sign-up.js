@@ -15,6 +15,7 @@ function SignUp() {
     const nav = useNavigate();
 
     const { user, setUser } = useContext(UserContext)
+    const [updateButton, setUpdateButton] = useState(0)
 
     const submit = async () => {
         try {
@@ -28,9 +29,11 @@ function SignUp() {
                 }
 
             else{
+                setUpdateButton(prev => prev + 1)
                 setUser({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false})
             }
         } catch (error) {
+            setUpdateButton(prev => prev + 1)
             console.log(error)
         }
     }
@@ -42,7 +45,7 @@ function SignUp() {
             <Formfield label="Password" value={password} setvalue={setPassword} placeholder="Type your password here" type="password"/>
             <Formfield label="Username" value={username} setvalue={setUsername} placeholder="Type your username here" />
             <Errorbox title={error}/>
-            <Button title="Submit" styles="mt-3" fn={submit}/>
+            <Button title="Submit" styles="mt-3" fn={submit} setVisible={updateButton}/>
             <Link className='text-white underline w-full text-right' to="/sign-in">Already have an Account? Sign in.</Link>
         </div>
     </div>

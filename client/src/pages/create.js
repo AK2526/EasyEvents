@@ -38,6 +38,7 @@ function Create() {
   const [date, setDate] = useState(null)
   const [file, setFile] = useState(null)
   const [error, setError] = useState("")
+  const [isLoading, setisLoading] = useState(0)
 
   useEffect(() => {
     console.log(date)
@@ -51,10 +52,12 @@ function Create() {
     setError("")
     if (name === "" || location === "" || quickdesc === "" || desc === "" || date === null) {
       setError("Please fill out all the fields")
+      setisLoading(prev => prev + 1)
       return null
     }
     if (await eventExists(name)) {
       setError("An event with the same name already exists. Please choose a different name")
+      setisLoading(prev => prev + 1)
       return null
     }
     setError("green Loading Location Information")
@@ -78,6 +81,15 @@ function Create() {
       console.log(file)
 
       setError("green Adding Event")
+      let imgName;
+      if (file)
+      {
+        imgName = file.name;
+      }
+      else
+      {
+        imgName = "Generated Image";
+      }
 
       await addEvent({...formatted_location, 
         event_name: name,
@@ -86,6 +98,7 @@ function Create() {
         description: desc,
         date: date,
         user_id: user.userId,
+        image_name: imgName
         
       }, eventId)
 
@@ -116,6 +129,7 @@ function Create() {
       }
 
     setError("green Done!")
+    nav(`/view/${eventId}`)
 
   }
 
@@ -153,7 +167,7 @@ function Create() {
       
 
       <div className='w-full flex justify-center py-10'>
-        <Button title="Create Event" styles="mt-3" containerStyles='justify-center w-[70%]' fn={submit} />
+        <Button title="Create Event" styles="mt-3" containerStyles='justify-center w-[70%]' fn={submit} setVisible={isLoading} />
       </div>
     </div>
   )

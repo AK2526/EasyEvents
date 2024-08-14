@@ -13,6 +13,8 @@ function SignIn() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
 
+    const [updateButton, setUpdateButton] = useState(0)
+
     const { setUser } = useContext(UserContext)
 
     const { prev } = useParams();
@@ -37,6 +39,7 @@ function SignIn() {
                 }
 
             else{
+                setUpdateButton(prev => prev + 1)
                 setUser({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false})
             }
             
@@ -44,6 +47,7 @@ function SignIn() {
 
         } catch (error) {
             console.log(error)
+            setUpdateButton(prev => prev + 1)
         }
 
 
@@ -58,7 +62,7 @@ function SignIn() {
             <Formfield label="Email" value={email} setvalue={setEmail} placeholder="Type your email here" type/>
             <Formfield label="Password" value={password} setvalue={setPassword} placeholder="Type your password here" type="password"/>
             <Errorbox title={error}/>
-            <Button title="Submit" fn={submit} styles="mt-3" />
+            <Button title="Submit" fn={submit} styles="mt-3" setVisible={updateButton}/>
             <Link className='text-white underline w-full text-right' to="/sign-up">Sign Up?</Link>
         </div>
     </div>
