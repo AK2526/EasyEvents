@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { getNextEvents, getPastEvents, getUpcomingEvents } from '../lib/data'
+import { getNearbyEvents, getNextEvents, getPastEvents, getUpcomingEvents } from '../lib/data'
 import GridView from '../components/GridView';
 import Button from '../components/Button';
 import RadioButtons from '../components/RadioButtons';
+import { getLocation } from '../lib/address';
 
 function Explore() {
 
@@ -10,6 +11,7 @@ function Explore() {
     const [query, setQuery] = useState(null)
     const [moreToLoad, setMoreToLoad] = useState(true)
     const [filter, setfilter] = useState("Upcoming")
+    const [locationLoaded, setlocationLoaded] = useState(false)
 
     const initializeUpcoming = async () => {
         setData([])
@@ -21,8 +23,27 @@ function Explore() {
         setQuery(await getPastEvents(setData))
     }
 
+    const initializeNearby = async () => {
+      setData([])
+      let q = await getNearbyEvents(setData)
+      if (q)
+        {
+          setQuery(q)
+          setlocationLoaded(true)
+        }
+        else{
+          setlocationLoaded(false)
+        }
+  }
+
     const update = async () => {
+      if (query){
         setQuery(await getNextEvents(query, data, setData, setMoreToLoad))
+      }
+      else{
+        setMoreToLoad(false)
+      }
+
     }
  
 
@@ -41,8 +62,18 @@ function Explore() {
       {
         initializePast()
       }
+      else if (filter === "Nearby")
+      {
+        initializeNearby()
+
+      }
     
     }, [filter])
+
+    useEffect(() => {
+      getLocation()
+    }, [])
+    
     
     
     
@@ -50,6 +81,7 @@ function Explore() {
     <div className='p-6'>
         {filter === "Upcoming" && <h1 className='text-white text-4xl font-semibold'>Explore Upcoming Events</h1>}
         {filter === "Past" && <h1 className='text-white text-4xl font-semibold'>Explore Past Events</h1>}
+        {filter === "Nearby" && <h1 className='text-white text-4xl font-semibold'>Explore Nearby Events</h1>}
         <div className='flex-row flex justify-end'>
         <RadioButtons names={['Upcoming', 'Past', 'Nearby']} selected={filter} setSelected={setfilter} />
         </div>

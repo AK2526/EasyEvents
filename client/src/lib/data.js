@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer, orderBy, startAt, limit, startAfter } from "firebase/firestore";
+import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer, orderBy, startAt, limit, startAfter, and } from "firebase/firestore";
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getNearby } from "./address";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6PPDvvZyJTghD4qxw81ECji7U9BsOtN0",
@@ -216,6 +217,31 @@ export const getPastEvents = async (setData) => {
   });
   return q;
 }
+
+export const getNearbyEvents = async (setData) => {
+  let cells = getNearby(2);
+  console.log(cells)
+  if (cells.length == 0) {
+    return null
+  }
+  const q = query(eventsCollection,
+    and(where("hexhash", "in", cells),
+      where("date", ">=", dayjs().format("YYYY/MM/DD"))),
+    limit(10)
+    
+  )
+
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  setData([])
+  querySnapshot.forEach((doc) => {
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
+  return q;
+}
+
 
 export const getNextEvents = async (qu, data, setData, setMoreToLoad) => {
   console.log(qu, data, data[data.length - 1])
