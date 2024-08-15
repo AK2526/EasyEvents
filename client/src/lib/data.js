@@ -228,7 +228,7 @@ export const getNearbyEvents = async (setData) => {
     and(where("hexhash", "in", cells),
       where("date", ">=", dayjs().format("YYYY/MM/DD"))),
     limit(10)
-    
+
   )
 
   const querySnapshot = await getDocs(q);
@@ -258,4 +258,38 @@ export const getNextEvents = async (qu, data, setData, setMoreToLoad) => {
     });
   });
   return q;
+}
+
+export const getFutureUserPosts = async (uid, setData) => {
+  const q = query(eventsCollection,
+    orderBy("date"),
+    startAt(dayjs().format("YYYY/MM/DD")),
+    where("user_id", "==", uid)
+  )
+
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  setData([])
+  querySnapshot.forEach((doc) => {
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
+}
+
+export const getPastUserPosts = async (uid, setData) => {
+  const q = query(eventsCollection,
+    orderBy("date", "desc"),
+    startAt(dayjs().format("YYYY/MM/DD")),
+    where("user_id", "==", uid)
+  )
+
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  setData([])
+  querySnapshot.forEach((doc) => {
+    setData(prev => {
+      return [...prev, doc]
+    });
+  });
 }

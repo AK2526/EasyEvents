@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getImageUrl } from '../lib/data'
 import dayjs from 'dayjs'
 import Button from './Button'
@@ -6,14 +6,23 @@ import AddressView from './AddressView'
 import ParagraphView from './ParagraphView'
 import Formfield from './Formfield'
 import Errorbox from './Errorbox'
+import { UserContext } from '../App'
+
 
 function ViewEvent({ data }) {
-    console.log(data)
+    const { user } = useContext(UserContext)
 
     const [image, setImage] = useState(null)
     const [email, setEmail] = useState("")
     const [enableButton, setenableButton] = useState(0)
     const [error, setError] = useState("")
+
+   useEffect(() => {
+        if (user.loggedIn) {
+            setEmail(user.email)
+        }
+   }, [user])
+
 
     const submit = async () => {
         setError("green Registering...")

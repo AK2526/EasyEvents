@@ -11,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import EventFullPage from './pages/event-full';
 import Explore from './pages/explore';
+import Profile from './pages/profile';
 
 
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/view/:id" element={<EventFullPage />}/>
           <Route path="/explore" element={<Explore/>} />
+          <Route path="/profile/:uid" element={<Profile />}/>
         </Routes>
       </Router>
     </UserContext.Provider>

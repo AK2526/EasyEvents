@@ -19,7 +19,7 @@ function Navbar() {
 
                     {user.name === ""
                         ? <button onClick={() => { navigate("/sign-in") }} className='shadow-md text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>Sign In</button>
-                        : <button onClick={() => { navigate("/profile") }} className='shadow-md text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>{user.name}</button>}
+                        : <button onClick={() => { navigate("/profile/"+user.userId) }} className='shadow-md text-white bg-secondary rounded-md text-sm px-2 py-1 hover:bg-[#531F43]'>{user.name}</button>}
                     
                     {user.name === ""
                     ?<button onClick={() => { navigate("/sign-up") }} className='shadow-md text-white bg-[#531F43]
