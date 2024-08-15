@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer, orderBy, startAt, limit, startAfter, and } from "firebase/firestore";
+import { getFirestore, collection, getDoc, doc, setDoc, addDoc, query, where, getDocs, getCountFromServer, orderBy, startAt, limit, startAfter, and, updateDoc } from "firebase/firestore";
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { getNearby } from "./address";
@@ -131,7 +131,12 @@ export const addEvent = async (info, event_id) => {
   const docRef = await setDoc(doc(eventsCollection, event_id),
     info)
   return "Success"
+}
 
+export const updateEvent = async (info, event_id) => {
+  const docRef = doc(eventsCollection, event_id)
+  await updateDoc(docRef, info);
+  return "Success"
 }
 
 export const eventExists = async (name) => {

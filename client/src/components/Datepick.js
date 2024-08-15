@@ -3,10 +3,10 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import Errorbox from './Errorbox'
 
-function Datepick({ setStringDate }) {
+function Datepick({ setStringDate, defaultDate=null }) {
 
 
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState(defaultDate? dayjs(defaultDate): null)
   const [error, setError] = useState("")
 
   const handleDate = () => {
@@ -37,6 +37,7 @@ function Datepick({ setStringDate }) {
       <DatePicker
         minDate={dayjs()}
         onChange={(d) => { setDate(d); console.log(d) }}
+        defaultValue={dayjs(defaultDate)}
 
         slotProps={{
           textField: {

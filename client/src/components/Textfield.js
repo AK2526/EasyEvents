@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Textfield({label, placeholder, rows, value, setValue, max}) {
   const [remaining, setRemaining] = useState(max? max: 100)
+  useEffect(() => {
+    setRemaining(max - value.length)
+  }, [])
   return (
     <div className='space-y-2'>
          <h3 className='text-white text-xl font-semibold'>{label}</h3>

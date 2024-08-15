@@ -12,15 +12,18 @@ function Explore() {
     const [moreToLoad, setMoreToLoad] = useState(true)
     const [filter, setfilter] = useState("Upcoming")
     const [locationLoaded, setlocationLoaded] = useState(false)
+    const [loading, setloading] = useState(true)
 
     const initializeUpcoming = async () => {
         setData([])
         setQuery(await getUpcomingEvents(setData))
+        setloading(false)
     }
 
     const initializePast = async () => {
         setData([])
         setQuery(await getPastEvents(setData))
+        setloading(false)
     }
 
     const initializeNearby = async () => {
@@ -34,16 +37,18 @@ function Explore() {
         else{
           setlocationLoaded(false)
         }
+      setloading(false)
   }
 
     const update = async () => {
+      setloading(true)
       if (query){
         setQuery(await getNextEvents(query, data, setData, setMoreToLoad))
       }
       else{
         setMoreToLoad(false)
       }
-
+      setloading(false)
     }
  
 
@@ -54,6 +59,7 @@ function Explore() {
 
     useEffect(() => {
       setMoreToLoad(true)
+      setloading(true)
       if (filter === "Upcoming")
       {
         initializeUpcoming()
@@ -88,9 +94,10 @@ function Explore() {
         
         {data && <GridView datalist={data} />}
         
-        {data.length == 0 && <h1 className='text-white text-2xl font-semibold text-center'>Error, Can't find any Events</h1>}
-        
+        {data.length == 0 && !loading && <h1 className='text-white text-2xl font-semibold text-center'>Error, Can't find any Events</h1>}
+        {loading && <h1 className='text-white text-2xl font-semibold text-center'>Loading...</h1>}
         {data.length != 0 && moreToLoad && <Button title="Load More" containerStyles='mt-10' fn={update} multiple={true} />}
+        
     </div>
   )
 }

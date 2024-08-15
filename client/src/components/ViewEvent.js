@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { getImageUrl } from '../lib/data'
+import { getImageUrl, getUsername } from '../lib/data'
 import dayjs from 'dayjs'
 import Button from './Button'
 import AddressView from './AddressView'
@@ -7,6 +7,7 @@ import ParagraphView from './ParagraphView'
 import Formfield from './Formfield'
 import Errorbox from './Errorbox'
 import { UserContext } from '../App'
+import { useNavigate } from 'react-router-dom'
 
 
 function ViewEvent({ data }) {
@@ -16,12 +17,15 @@ function ViewEvent({ data }) {
     const [email, setEmail] = useState("")
     const [enableButton, setenableButton] = useState(0)
     const [error, setError] = useState("")
+    const [username, setUsername] = useState("")
 
-   useEffect(() => {
+    const nav = useNavigate()
+
+    useEffect(() => {
         if (user.loggedIn) {
             setEmail(user.email)
         }
-   }, [user])
+    }, [user])
 
 
     const submit = async () => {
@@ -39,7 +43,7 @@ function ViewEvent({ data }) {
             if (data.status === "Success") {
                 setError("green Registered!")
             }
-            else{
+            else {
                 setenableButton(prev => prev + 1)
                 setError("Invalid Email")
             }
@@ -51,6 +55,9 @@ function ViewEvent({ data }) {
     useEffect(() => {
         getImageUrl(data.event_id).then((url) => {
             setImage(url)
+        })
+        getUsername(data.user_id).then((name) => {
+            setUsername(name)
         })
     }, [])
 
@@ -65,9 +72,19 @@ function ViewEvent({ data }) {
                         <p className='text-white text-lg mt-4'>{data.quick_description}</p>
                     </div>
                     <div>
-                        <Formfield label="Email" type="email" placeholder="Enter your email" setvalue={setEmail} value={email} />
-                        <Button title="Register" containerStyles='my-3' fn={submit} setVisible={enableButton}/>
-                        <Errorbox title={error} />
+                        {(user.loggedIn && user.userId === data.user_id) ?
+                            <div>
+                                <Button title="Edit" containerStyles='my-3' fn={() => {nav("/edit/" + data.event_id)}}  />
+                            </div> 
+                            :
+                            <div>
+                                <Formfield label="Email" type="email" placeholder="Enter your email" setvalue={setEmail} value={email} />
+                                <Button title="Register" containerStyles='my-3' fn={submit} setVisible={enableButton} />
+                                <Errorbox title={error} />
+                                
+                            </div>
+                        }
+
                     </div>
 
                 </div>
@@ -81,6 +98,9 @@ function ViewEvent({ data }) {
             <div className='space-y-4'>
                 <h2 className='text-white text-3xl font-semibold text-center'></h2>
                 <ParagraphView text={data.description} />
+            </div>
+            <div>
+                {username && <p className='text-white text-xl font-semibold'>Created by: {username}</p>}
             </div>
             <div className=''>
                 <h1 className='text-white text-xl font-semibold text-center'>{data.location_name}</h1>

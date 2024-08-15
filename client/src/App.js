@@ -12,6 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import EventFullPage from './pages/event-full';
 import Explore from './pages/explore';
 import Profile from './pages/profile';
+import Edit from './pages/edit';
 
 
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/view/:id" element={<EventFullPage />}/>
           <Route path="/explore" element={<Explore/>} />
           <Route path="/profile/:uid" element={<Profile />}/>
+          <Route path="/edit/:id" element={<Edit />}/>
         </Routes>
       </Router>
     </UserContext.Provider>

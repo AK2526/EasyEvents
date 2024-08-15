@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Formfield from './Formfield'
 import Errorbox from './Errorbox';
 
 function Addressfield({ location, setLocation, setGeoLoc }) {
 
     const [error, setError] = useState("")
+
+    // useEffect(() => {
+    //     if (location !== "") {
+    //         handleBlur()
+    //     }
+    // }, [])
     
     const handleBlur = async () => {
         try {
