@@ -4,11 +4,39 @@ import dayjs from 'dayjs'
 import Button from './Button'
 import AddressView from './AddressView'
 import ParagraphView from './ParagraphView'
+import Formfield from './Formfield'
+import Errorbox from './Errorbox'
 
 function ViewEvent({ data }) {
     console.log(data)
 
     const [image, setImage] = useState(null)
+    const [email, setEmail] = useState("")
+    const [enableButton, setenableButton] = useState(0)
+    const [error, setError] = useState("")
+
+    const submit = async () => {
+        setError("green Registering...")
+        await fetch("/register", {
+            method: "POST",
+            body: JSON.stringify({
+                event_id: data.event_id,
+                text: email
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(response => response.json()).then(data => {
+            if (data.status === "Success") {
+                setError("green Registered!")
+            }
+            else{
+                setenableButton(prev => prev + 1)
+                setError("Invalid Email")
+            }
+        }
+        );
+    }
 
 
     useEffect(() => {
@@ -28,7 +56,9 @@ function ViewEvent({ data }) {
                         <p className='text-white text-lg mt-4'>{data.quick_description}</p>
                     </div>
                     <div>
-                        <Button title="Register" containerStyles='mt-10' />
+                        <Formfield label="Email" type="email" placeholder="Enter your email" setvalue={setEmail} value={email} />
+                        <Button title="Register" containerStyles='my-3' fn={submit} setVisible={enableButton}/>
+                        <Errorbox title={error} />
                     </div>
 
                 </div>

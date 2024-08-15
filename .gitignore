@@ -4,3 +4,4 @@ server/certificates/serviceAccount.json
 .vscode/
 server/venv/
 server/__pycache__/
+server/event_registrations/

@@ -6,6 +6,8 @@ from PIL import Image
 from api import googleAPI, hugginfaceAPI
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
+import regex as re
+import re
 
 FIREBASE_CONFIG = '{apiKey: "AIzaSyD6PPDvvZyJTghD4qxw81ECji7U9BsOtN0",' +\
 'authDomain: "easy-events-alank.firebaseapp.com",' +\
@@ -54,7 +56,6 @@ def test(imgTit):
     image_bytes = query({
         "inputs": "pixel art, simple, " + imgTit + "event",
     })
-    # You can access the image with PIL.Image for example
 
     # Save the image to a file
     with open("image.jpg", "wb") as file:
@@ -104,6 +105,27 @@ def genimg():
         # Upload image to firebase
         blobby = bucket.blob("thumbnails/" + event_id + "")
         blobby.upload_from_string(getImage(details), content_type="image/jpg")
+        
+        return {"status": "Success"}
+    except:
+        return {"status": "Error"}
+    
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        data = request.json
+        # Get data
+        event_id = data['event_id']
+        text = data['text']
+
+        # Validate email
+        if re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", text):
+            # Email is valid
+            with open("event_registrations/" + event_id, "a") as myfile:
+                myfile.write(text + "\n")
+        else:
+            # Email is invalid
+            return {"status": "Invalid email"}
         
         return {"status": "Success"}
     except:

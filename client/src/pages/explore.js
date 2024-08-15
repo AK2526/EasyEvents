@@ -87,7 +87,10 @@ function Explore() {
         </div>
         
         {data && <GridView datalist={data} />}
-        {moreToLoad && <Button title="Load More" containerStyles='mt-10' fn={update} multiple={true} />}
+        
+        {data.length == 0 && <h1 className='text-white text-2xl font-semibold text-center'>Error, Can't find any Events</h1>}
+        
+        {data.length != 0 && moreToLoad && <Button title="Load More" containerStyles='mt-10' fn={update} multiple={true} />}
     </div>
   )
 }
