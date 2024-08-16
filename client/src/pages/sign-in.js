@@ -34,7 +34,7 @@ function SignIn() {
                     }
                     else{
 
-                        nav('/')
+                        nav('/profile/'+u.uid)
                     }
                 }
 

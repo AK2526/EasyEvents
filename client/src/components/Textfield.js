@@ -12,8 +12,7 @@ function Textfield({label, placeholder, rows, value, setValue, max}) {
         className='w-full bg-white text-black p-2 rounded-md border font-bold resize-none' 
         rows={rows? rows: 3} maxLength={max? max: 100} value={value} 
         onChange={(e) => {setValue(e.target.value); setRemaining(max - e.target.value.length)}}
-        placeholder={placeholder? placeholder: "Type here..."}
-        disabled={true}></textarea>
+        placeholder={placeholder? placeholder: "Type here..."}></textarea>
         <p className='text-right text-white '>Remaining characters: {remaining}</p>
     </div>
   )

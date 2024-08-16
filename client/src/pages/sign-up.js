@@ -19,13 +19,14 @@ function SignUp() {
 
     const submit = async () => {
         try {
+            setError("green Signing Up...")
             let k = await signup(email, password, username, setError)
             let u = k.user
             if (u)
                 {
                         setUser({name: await getUsername(u.uid), email: u.email, userId: u.uid, auth: sendAuth(), loggedIn: true})
 
-                    nav('/')
+                    nav('/profile/'+u.uid)
                 }
 
             else{
