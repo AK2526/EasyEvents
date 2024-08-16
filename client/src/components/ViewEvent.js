@@ -8,6 +8,7 @@ import Formfield from './Formfield'
 import Errorbox from './Errorbox'
 import { UserContext } from '../App'
 import { useNavigate } from 'react-router-dom'
+import TextDisplay from './TextDisplay'
 
 
 function ViewEvent({ data }) {
@@ -18,6 +19,8 @@ function ViewEvent({ data }) {
     const [enableButton, setenableButton] = useState(0)
     const [error, setError] = useState("")
     const [username, setUsername] = useState("")
+    const [showRegistrants, setshowRegistrants] = useState(false)
+    const [registrants, setregistrants] = useState("Loading...")
 
     const nav = useNavigate()
 
@@ -26,6 +29,11 @@ function ViewEvent({ data }) {
             setEmail(user.email)
         }
     }, [user])
+
+    useEffect(() => {
+      fetch("/get-registrants/" + data.event_id).then(response => response.json()).then(data => {setregistrants(data.registrants)})
+    }, [showRegistrants])
+    
 
 
     const submit = async () => {
@@ -75,6 +83,7 @@ function ViewEvent({ data }) {
                         {(user.loggedIn && user.userId === data.user_id) ?
                             <div>
                                 <Button title="Edit" containerStyles='my-3' fn={() => {nav("/edit/" + data.event_id)}}  />
+                                <Button title="Show Registrants" containerStyles='my-3' fn={() => {setshowRegistrants(true)}}  />
                             </div> 
                             :
                             <div>
@@ -96,6 +105,7 @@ function ViewEvent({ data }) {
             </div>
 
             <div className='space-y-4'>
+                { showRegistrants && <TextDisplay data={registrants} />}
                 <h2 className='text-white text-3xl font-semibold text-center'></h2>
                 <ParagraphView text={data.description} />
             </div>

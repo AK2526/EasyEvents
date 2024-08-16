@@ -43,6 +43,13 @@ def getImage(name):
     })
     return image_bytes
 
+def getRegistrants(event_id):
+    try:
+        with open("event_registrations/" + event_id, "r") as myfile:
+            return '\n'.join(list(set(myfile.read().splitlines())))
+    except:
+        return ""
+
 
 @app.route('/getimg/<imgTit>')
 def test(imgTit):
@@ -130,6 +137,10 @@ def register():
         return {"status": "Success"}
     except:
         return {"status": "Error"}
+    
+@app.route('/get-registrants/<id>')
+def getpeople(id):
+    return {"registrants": getRegistrants(id)}
 
 if __name__ == '__main__':
     app.run(debug=True)

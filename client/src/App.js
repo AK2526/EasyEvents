@@ -13,6 +13,7 @@ import EventFullPage from './pages/event-full';
 import Explore from './pages/explore';
 import Profile from './pages/profile';
 import Edit from './pages/edit';
+import Home from './pages/home';
 
 
 
@@ -30,7 +31,7 @@ function App() {
         <Navbar />
         <Routes>
 
-          <Route path="/" element={<div className=' text-white '><h1 >HOME PAGE</h1></div>} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<h1>ABOUT PAGE</h1>} />
           <Route path="/sign-in/:prev?" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />

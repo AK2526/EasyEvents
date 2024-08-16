@@ -41,8 +41,11 @@ function Profile() {
 
                             <h1 className='text-white text-2xl font-semibold mt-8'>Upcoming Events</h1>
                             <GridView datalist={futureEvents} />
+                            {futureEvents.length === 0 && <h1 className='text-white text-xl font-semibold text-center'>No Upcoming Events</h1>}
                             <h1 className='text-white text-2xl font-semibold mt-8'>Past Events</h1>
                             <GridView datalist={pastEvents} />
+                            {pastEvents.length === 0 && <h1 className='text-white text-xl font-semibold text-center'>No Past Events</h1>
+                            }
 
                         </div>
 
