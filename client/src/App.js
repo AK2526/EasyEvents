@@ -22,27 +22,31 @@ import Home from './pages/home';
 export const UserContext = createContext();
 function App() {
   document.body.style = 'background: #071C28;';
-  const [user, setUser] = useState({name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false}) 
+  const [user, setUser] = useState({ name: "", email: "", userId: "", auth: sendAuth(), loggedIn: false })
+
+  useEffect(() => {
+    document.title = 'EasyEvents';
+  }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <UserContext.Provider value={{user, setUser}}>
-      <Router>
-        <Navbar />
-        <Routes>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router>
+          <Navbar />
+          <Routes>
 
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<h1>ABOUT PAGE</h1>} />
-          <Route path="/sign-in/:prev?" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/create" element={<Create />} />
-          <Route path="/view/:id" element={<EventFullPage />}/>
-          <Route path="/explore" element={<Explore/>} />
-          <Route path="/profile/:uid" element={<Profile />}/>
-          <Route path="/edit/:id" element={<Edit />}/>
-        </Routes>
-      </Router>
-    </UserContext.Provider>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<h1>ABOUT PAGE</h1>} />
+            <Route path="/sign-in/:prev?" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/view/:id" element={<EventFullPage />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/profile/:uid" element={<Profile />} />
+            <Route path="/edit/:id" element={<Edit />} />
+          </Routes>
+        </Router>
+      </UserContext.Provider>
     </LocalizationProvider>
   )
 }
