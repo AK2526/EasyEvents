@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Formfield from '../components/Formfield'
 import Textfield from '../components/Textfield'
-import dayjs, { Dayjs } from 'dayjs'
 import Addressfield from '../components/Addressfield'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../App'
@@ -40,11 +39,6 @@ function Create() {
   const [error, setError] = useState("")
   const [isLoading, setisLoading] = useState(0)
 
-  useEffect(() => {
-    console.log(date)
-
-  }, [date])
-  
 
   const submit = async () => {
     
@@ -75,10 +69,8 @@ function Create() {
         place_id: "",
         hexhash: ""
       }}
-      console.log(formatted_location)
 
       let eventId = await getEventId()
-      console.log(file)
 
       setError("green Adding Event")
       let imgName;
@@ -105,7 +97,6 @@ function Create() {
 
       if (file) {
         setError("green Uploading Image")
-        console.log("Uploading Image")
         try {
           await uploadImage(file, eventId)
         } catch (error) {

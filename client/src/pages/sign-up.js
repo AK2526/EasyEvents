@@ -14,7 +14,7 @@ function SignUp() {
 
     const nav = useNavigate();
 
-    const { user, setUser } = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const [updateButton, setUpdateButton] = useState(0)
 
     const submit = async () => {

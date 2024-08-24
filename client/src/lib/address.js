@@ -72,13 +72,11 @@ export async function getLocation() {
     if (hex == null)
     {
     hex = latLngToCell(position.coords.latitude, position.coords.longitude, 4);
-    console.log("SUCCESSFULLY LOCATED")
     }
   }
 
  export function getNearby(k) {
     getLocation();
-    console.log("SERACHING", k, hex)
     if (hex == null)
     {
         return []

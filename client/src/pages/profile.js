@@ -13,7 +13,7 @@ function Profile() {
     const [userName, setUserName] = useState("")
     const [loading, setLoading] = useState(true)
 
-    const initialize = async () => {
+    const initialize = async (uid) => {
         setFutureEvents([])
         setPastEvents([])
         await getFutureUserPosts(uid, setFutureEvents)
@@ -23,7 +23,7 @@ function Profile() {
     }
 
     useEffect(() => {
-        initialize()
+        initialize(uid)
 
     }, [uid])
 

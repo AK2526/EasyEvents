@@ -27,7 +27,6 @@ export const sendAuth = () => { return auth; }
 
 export const getUsername = async (uid) => {
 
-  console.log("Getting username")
   const docRef = doc(usersCollection, uid)
   const docSnap = await getDoc(docRef);
 
@@ -62,7 +61,6 @@ export const login = async (email, password, setError) => {
     setError("green Attempting...")
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     setError("")
-    console.log(auth)
     return userCred
   } catch (error) {
     console.log(error)
@@ -87,7 +85,6 @@ export const signup = async (email, password, name, setError) => {
     }
 
     const q = await getCountFromServer(query(usersCollection, where("username", "==", name)));
-    console.log(q.data().count)
     if (q.data().count > 0) {
       setError("Username already in use")
       return null
@@ -127,7 +124,6 @@ export const logout = async (setUser) => {
 }
 
 export const addEvent = async (info, event_id) => {
-  console.log(auth.currentUser)
   const docRef = await setDoc(doc(eventsCollection, event_id),
     info)
   return "Success"
@@ -145,7 +141,6 @@ export const eventExists = async (name) => {
 }
 
 export const uploadImage = async (file, event_id) => {
-  console.log("UploadImage")
   const storage = getStorage(app);
   const storageRef = ref(storage, 'thumbnails/' + event_id);
   const snapshot = await uploadBytes(storageRef, file);
@@ -194,7 +189,6 @@ export const getUpcomingEvents = async (setData) => {
   )
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
   setData([])
   querySnapshot.forEach((doc) => {
     setData(prev => {
@@ -213,7 +207,6 @@ export const getPastEvents = async (setData) => {
   )
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
   setData([])
   querySnapshot.forEach((doc) => {
     setData(prev => {
@@ -225,7 +218,6 @@ export const getPastEvents = async (setData) => {
 
 export const getNearbyEvents = async (setData) => {
   let cells = getNearby(2);
-  console.log(cells)
   if (cells.length == 0) {
     return null
   }
@@ -237,7 +229,6 @@ export const getNearbyEvents = async (setData) => {
   )
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
   setData([])
   querySnapshot.forEach((doc) => {
     setData(prev => {
@@ -249,11 +240,8 @@ export const getNearbyEvents = async (setData) => {
 
 
 export const getNextEvents = async (qu, data, setData, setMoreToLoad) => {
-  console.log(qu, data, data[data.length - 1])
   const q = query(qu, startAfter(data[data.length - 1]));
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
-
   setMoreToLoad(false)
 
   querySnapshot.forEach((doc) => {
@@ -273,7 +261,6 @@ export const getFutureUserPosts = async (uid, setData) => {
   )
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
   setData([])
   querySnapshot.forEach((doc) => {
     setData(prev => {
@@ -290,7 +277,6 @@ export const getPastUserPosts = async (uid, setData) => {
   )
 
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot)
   setData([])
   querySnapshot.forEach((doc) => {
     setData(prev => {

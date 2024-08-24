@@ -16,11 +16,6 @@ function EventFullPage() {
     }
 
     useEffect(() => {
-        console.log(event)
-    }
-    , [event])
-
-    useEffect(() => {
         loadInfo();
     }
         , [])

@@ -11,7 +11,7 @@ function Explore() {
     const [query, setQuery] = useState(null)
     const [moreToLoad, setMoreToLoad] = useState(true)
     const [filter, setfilter] = useState("Upcoming")
-    const [locationLoaded, setlocationLoaded] = useState(false)
+    //const [locationLoaded, setlocationLoaded] = useState(true)
     const [loading, setloading] = useState(true)
 
     const initializeUpcoming = async () => {
@@ -32,10 +32,6 @@ function Explore() {
       if (q)
         {
           setQuery(q)
-          setlocationLoaded(true)
-        }
-        else{
-          setlocationLoaded(false)
         }
       setloading(false)
   }
@@ -51,13 +47,7 @@ function Explore() {
       setloading(false)
     }
  
-
-    useEffect(() => {
-      console.log(query)
-    
-    }, [query])
-
-    useEffect(() => {
+    const runFilter = async (filter) => {
       setMoreToLoad(true)
       setloading(true)
       if (filter === "Upcoming")
@@ -73,6 +63,10 @@ function Explore() {
         initializeNearby()
 
       }
+    }
+
+    useEffect(() => {
+      runFilter(filter)  
     
     }, [filter])
 
@@ -89,14 +83,14 @@ function Explore() {
         {filter === "Past" && <h1 className='text-white text-4xl font-semibold'>Explore Past Events</h1>}
         {filter === "Nearby" && <h1 className='text-white text-4xl font-semibold'>Explore Nearby Events</h1>}
         <div className='flex-row flex justify-end'>
-        <RadioButtons names={['Upcoming', 'Past', 'Nearby']} selected={filter} setSelected={setfilter} />
+        <RadioButtons names={['Upcoming', 'Past', 'Nearby']} selected={filter} setSelected={setfilter} runFn={runFilter} />
         </div>
         
         {data && <GridView datalist={data} />}
         
-        {data.length == 0 && !loading && <h1 className='text-white text-2xl font-semibold text-center'>Error, Can't find any Events</h1>}
+        {data.length === 0 && !loading && <h1 className='text-white text-2xl font-semibold text-center'>Error, Can't find any Events</h1>}
         {loading && <h1 className='text-white text-2xl font-semibold text-center'>Loading...</h1>}
-        {data.length != 0 && moreToLoad && <Button title="Load More" containerStyles='mt-10' fn={update} multiple={true} />}
+        {data.length !== 0 && moreToLoad && <Button title="Load More" containerStyles='mt-10' fn={update} multiple={true} />}
         
     </div>
   )

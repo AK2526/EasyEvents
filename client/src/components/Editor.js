@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Textfield from './Textfield';
 import Datepick from './Datepick';
 import Button from './Button';
@@ -13,7 +13,6 @@ import { getAddressJson } from '../lib/address';
 function Editor({event}) {
 
   const nav = useNavigate()
-  console.log(event)
 
   const quicklen = 150;
   const desclen = 2000;
@@ -34,7 +33,6 @@ function Editor({event}) {
     setError("green Loading...")
     setError("")
     if (name === "" || location === "" || quickdesc === "" || desc === "" || date === null) {
-      console.log(name, location, quickdesc, desc, date)
       setError("Please fill out all the fields")
       setisLoading(prev => prev + 1)
       return null
@@ -90,7 +88,6 @@ function Editor({event}) {
       
       if (file) {
         setError("green Uploading Image")
-        console.log("Uploading Image")
         try {
           await uploadImage(file, event.event_id)
         } catch (error) {

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 from flask_cors import CORS
 import requests
 import io
@@ -112,9 +112,10 @@ def genimg():
         # Upload image to firebase
         blobby = bucket.blob("thumbnails/" + event_id + "")
         blobby.upload_from_string(getImage(details), content_type="image/jpg")
-        
+        print("SUCCESS")
         return {"status": "Success"}
     except:
+        print("FAILURE")
         return {"status": "Error"}
     
 @app.route('/register', methods=['POST'])

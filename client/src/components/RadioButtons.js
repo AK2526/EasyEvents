@@ -1,7 +1,6 @@
 import React from 'react'
 
-function RadioButtons({ names, selected, setSelected }) {
-    console.log(selected)
+function RadioButtons({ names, selected, setSelected, runFn }) {
     const handleChange = (e) => {
         setSelected(e.target.value)
     }

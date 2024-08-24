@@ -15,7 +15,6 @@ function Datepick({ setStringDate, defaultDate=null }) {
     }
     else if ( date.isBefore(dayjs(), 'day'))
     {
-      console.log(dayjs())
       setError("Please choose a date in the future")
       setStringDate(null)
     }
@@ -36,7 +35,7 @@ function Datepick({ setStringDate, defaultDate=null }) {
       <h3 className='text-white text-xl font-semibold'>Date</h3>
       <DatePicker
         minDate={dayjs()}
-        onChange={(d) => { setDate(d); console.log(d) }}
+        onChange={(d) => { setDate(d); }}
         defaultValue={dayjs(defaultDate)}
 
         slotProps={{

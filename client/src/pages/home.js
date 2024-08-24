@@ -2,7 +2,6 @@ import React from 'react'
 import herocover from '../assets/herocover.jpg'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom';
-import { getUpcomingEvents } from '../lib/data';
 
 function Home() {
     const nav = useNavigate();

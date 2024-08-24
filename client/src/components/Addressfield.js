@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Formfield from './Formfield'
 import Errorbox from './Errorbox';
 
 function Addressfield({ location, setLocation, setGeoLoc }) {
@@ -25,7 +24,6 @@ function Addressfield({ location, setLocation, setGeoLoc }) {
             }
             setError("")
             setLocation(data.name + " (" + data.formatted_address + ")");
-            console.log("Updated location")
         } catch (error) {
             console.error('Error fetching data:', error);
             setGeoLoc(null);

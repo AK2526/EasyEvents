@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SignIn from './pages/sign-in';
 import SignUp from './pages/sign-up';
-import { getUsername, sendAuth } from './lib/data';
-import { onAuthStateChanged } from 'firebase/auth';
+import { sendAuth } from './lib/data';
 import Create from './pages/create';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
